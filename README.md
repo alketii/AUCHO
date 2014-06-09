@@ -10,6 +10,7 @@ I'm still learning pyQt. Many things are missing , and many aren't done right.
 
 ### DESCRIPTION
 Upload only your modified files on FTP.
+It uses MD5 (will change to CRC32) to store hash in sqlite3 db and will compare them with another sqlite3 db which stores uploaded data.
 
 ### SCREENSHOTS
 ![alt tag](https://i.imgur.com/1KmpYE5.png)
