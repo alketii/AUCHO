@@ -43,4 +43,5 @@ It uses MD5 (in next version will be changed to CRC-32) to store hash in sqlite 
 ![alt tag](https://i.imgur.com/KQtGaKu.png)
 ###### Comparing files (after some modifications)
 ![alt tag](https://i.imgur.com/7fcpp2e.png)
-
+###### Windows 7
+![alt tag](https://i.imgur.com/I0lwXRB.png)
