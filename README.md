@@ -17,5 +17,5 @@ Upload only your modified files on FTP.
 ![alt tag](https://i.imgur.com/KQtGaKu.png)
 
 ### BINARIES
-* Linux x64 https://github.com/alketii/AUCHO/blob/master/BIN/AUCHO_Linux_x64.zip
-* Windows x86 https://github.com/alketii/AUCHO/blob/master/BIN/AUCHO_Windows_x86.zip
+* Linux x64 https://github.com/alketii/AUCHO/blob/master/BIN/AUCHO_Linux_x64.zip?raw=true
+* Windows x86 https://github.com/alketii/AUCHO/blob/master/BIN/AUCHO_Windows_x86.zip?raw=true
