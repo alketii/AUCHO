@@ -503,7 +503,7 @@ if __name__ == "__main__":
     ui.showProjects()
     MainWindow.show()
 
-    NewProject = QtGui.QMainWindow()
+    NewProject = QtGui.QMainWindow(MainWindow)
     ui_newProject = Ui_formProjects()
     ui_newProject.setupUi(NewProject)
 
