@@ -504,6 +504,7 @@ if __name__ == "__main__":
     MainWindow.show()
 
     NewProject = QtGui.QMainWindow(MainWindow)
+    NewProject.setModal(True)
     ui_newProject = Ui_formProjects()
     ui_newProject.setupUi(NewProject)
 
