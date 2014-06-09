@@ -4,7 +4,7 @@ AUCHO
 AUCHO Upload Changes Only - version 0.1-dev
 
 ## CAUTION
-THIS IS AN EXPERIMENTAL VERSION , USE FOR TESTING PURPOSES ONLY !
+THIS IS AN EXPERIMENTAL VERSION , USE FOR TESTING PURPOSES ONLY ! This means it may work ,but it also may surprise you.
 
 I'm still learning pyQt. Many things are missing , and many aren't done right.
 
