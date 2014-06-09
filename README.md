@@ -4,7 +4,8 @@ AUCHO
 AUCHO Upload Changes Only - version 0.1-dev
 
 ## CAUTION
-THIS IS AN EXPERIMENTAL VERSION , USE FOR TESTING PURPOSES ONLY ! This means it may work ,but it also may surprise you.
+THIS IS AN EXPERIMENTAL VERSION , USE FOR TESTING PURPOSES ONLY ! 
+This means it may work ,but it also may surprise you.
 
 I'm still learning pyQt. Many things are missing , and many aren't done right.
 
@@ -20,6 +21,7 @@ It uses MD5 (in next version will be changed to CRC-32) to store hash in sqlite 
 * Create Project
 * Compare files for changes
 * Upload modified or new files
+* Choose with checkbox which files to Upload
 * Many other small things
 
 ### TODO
