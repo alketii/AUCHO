@@ -9,8 +9,8 @@ THIS IS AN EXPERIMENTAL VERSION , USE FOR TESTING PURPOSES ONLY !
 I'm still learning pyQt. Many things are missing , and many aren't done right.
 
 ### DESCRIPTION
-Upload only your modified files on FTP.
-It uses MD5 (will change to CRC32) to store hash in sqlite3 db and will compare them with another sqlite3 db which stores uploaded data.
+Upload only your modified and new files on FTP.
+It uses MD5 (in next version will be changed to CRC-32) to store hash in sqlite db and will compare them with another db which stores uploaded data.
 
 ### BINARIES
 * Linux x64 https://github.com/alketii/AUCHO/blob/master/BIN/AUCHO_Linux_x64.zip?raw=true
