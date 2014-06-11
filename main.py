@@ -1,5 +1,5 @@
 """
-Copyright (C) 2014  Alket Rexhepi
+Copyright (C) 2014  Alket Rexhepi info@kiwi.al
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -68,8 +68,7 @@ class Ui_MainWindow(object):
         self.pushButton_edit = QtGui.QPushButton(self.centralwidget)
         self.pushButton_edit.setObjectName(_fromUtf8("pushButton_edit"))
         self.gridLayout.addWidget(self.pushButton_edit, 0, 3, 1, 1)
-        self.pushButton_edit.setEnabled(False)
-
+        
         self.pushButton_new = QtGui.QPushButton(self.centralwidget)
         self.pushButton_new.setObjectName(_fromUtf8("pushButton_new"))
         self.gridLayout.addWidget(self.pushButton_new, 0, 4, 1, 1)
@@ -107,7 +106,7 @@ class Ui_MainWindow(object):
         self.pushButton_new.clicked.connect(self.newProjectForm)
         self.pushButton_compare.clicked.connect(self.compareFiles)
         self.pushButton_update.clicked.connect(self.updateAndUpload)
-
+        self.pushButton_edit.clicked.connect(self.editProjectForm)
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "AUCHO", None))
@@ -130,6 +129,53 @@ class Ui_MainWindow(object):
     def newProjectForm(self):
         NewProject.show()
 
+    def removeProject(self):
+    	EditProject.hide()
+        areYouSure = QtGui.QMessageBox.question(None, 'Message',"Are you sure to quit?", QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+        if areYouSure == QtGui.QMessageBox.Yes:
+            index = self.comboBox_projects.currentIndex()
+            project = self.getProject(index)
+            con = sqlite3.connect('data/main.sql')
+            con.text_factory = str
+            cur = con.cursor()
+            con.execute("DELETE FROM main WHERE id=?",[project[0]])
+            con.commit()
+            os.remove('data/'+project[0]+'.sql')
+            os.remove('data/last/'+project[0]+'.sql')
+            self.showProjects()
+
+    def editProjectForm(self):
+    	index = self.comboBox_projects.currentIndex()
+        project = self.getProject(index)
+        projectId = project[0]
+        projectTitle = project[1]
+        projectDir = project[2]
+        projectFTP_host = project[3]
+        projectFTP_user = project[4]
+        projectFTP_password = project[5]
+        projectFTP_dir = project[7]
+
+    	ui_editProject.lineEdit_projectTitle.setText(projectTitle)
+    	ui_editProject.lineEdit_localDirectory.setText(projectDir)
+    	ui_editProject.lineEdit_ftpHost.setText(projectFTP_host)
+    	ui_editProject.lineEdit_ftpUser.setText(projectFTP_user)
+    	ui_editProject.lineEdit_ftpPassword.setText(projectFTP_password)
+    	ui_editProject.lineEdit_ftpDirectory.setText(projectFTP_dir)
+        EditProject.show()
+
+    def editProjectEdit(self):
+    	index = self.comboBox_projects.currentIndex()
+        project = self.getProject(index)
+        projectId = project[0]
+
+        con = sqlite3.connect('data/main.sql')
+        con.text_factory = str
+        cur = con.cursor()
+        cur.execute("UPDATE main SET title=? , directory=? , ftp_host=? , ftp_user=? , ftp_password=? , ftp_directory=? WHERE id=? ", [str(ui_editProject.lineEdit_projectTitle.text()), str(ui_editProject.lineEdit_localDirectory.text()), str(ui_editProject.lineEdit_ftpHost.text()), str(ui_editProject.lineEdit_ftpUser.text()), str(ui_editProject.lineEdit_ftpPassword.text()), str(ui_editProject.lineEdit_ftpDirectory.text()),projectId])
+        con.commit()
+        self.showProjects()
+        EditProject.hide()
+
     def showProjects(self):
         self.comboBox_projects.clear()
         con = sqlite3.connect('data/main.sql')
@@ -141,8 +187,10 @@ class Ui_MainWindow(object):
             self.comboBox_projects.addItem(row[1])
         if len(rows) == 0:
             self.pushButton_compare.setEnabled(False)
+            self.pushButton_edit.setEnabled(False)
         else:
             self.pushButton_compare.setEnabled(True)
+            self.pushButton_edit.setEnabled(True)
 
     def getProject(self,index):
         con = sqlite3.connect('data/main.sql')
@@ -492,6 +540,93 @@ class Ui_formProjects(object):
         dirname = QtGui.QFileDialog.getExistingDirectory(None,'Select directory of project',expanduser('~'))
         self.lineEdit_localDirectory.setText(dirname)
 
+class Ui_formEditProject(object):
+    def setupUi(self, formProjects):
+        formProjects.setObjectName(_fromUtf8("formProjects"))
+        formProjects.resize(406, 220)
+        formProjects.setMinimumSize(QtCore.QSize(406, 220))
+        formProjects.setMaximumSize(QtCore.QSize(406, 220))
+
+        self.widget = QtGui.QWidget(formProjects)
+        self.widget.setGeometry(QtCore.QRect(10, 10, 385, 214))
+        self.widget.setObjectName(_fromUtf8("widget"))
+        self.gridLayout = QtGui.QGridLayout(self.widget)
+        self.gridLayout.setMargin(0)
+        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+
+        self.pushButton_editProject = QtGui.QPushButton(formProjects)
+        self.pushButton_editProject.setGeometry(QtCore.QRect(225, 180, 94, 24))
+        self.pushButton_editProject.setObjectName(_fromUtf8("pushButton_editProject"))
+
+        self.pushButton_removeProject = QtGui.QPushButton(formProjects)
+        self.pushButton_removeProject.setGeometry(QtCore.QRect(100, 180, 94, 24))
+        self.pushButton_removeProject.setObjectName(_fromUtf8("pushButton_removeProject"))
+
+        self.label = QtGui.QLabel(self.widget)
+        self.label.setObjectName(_fromUtf8("label"))
+        self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
+        self.lineEdit_projectTitle = QtGui.QLineEdit(self.widget)
+        self.lineEdit_projectTitle.setObjectName(_fromUtf8("lineEdit_projectTitle"))
+        self.gridLayout.addWidget(self.lineEdit_projectTitle, 0, 1, 1, 1)
+        self.label_2 = QtGui.QLabel(self.widget)
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
+        self.lineEdit_localDirectory = QtGui.QLineEdit(self.widget)
+        self.lineEdit_localDirectory.setObjectName(_fromUtf8("lineEdit_localDirectory"))
+        self.gridLayout.addWidget(self.lineEdit_localDirectory, 1, 1, 1, 1)
+
+        self.pushButton_browse = QtGui.QPushButton(self.widget)
+        self.pushButton_browse.setObjectName(_fromUtf8("pushButton_browse"))
+        self.gridLayout.addWidget(self.pushButton_browse, 1, 2, 1, 1)
+
+        self.label_3 = QtGui.QLabel(self.widget)
+        self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.gridLayout.addWidget(self.label_3, 2, 0, 1, 1)
+        self.lineEdit_ftpHost = QtGui.QLineEdit(self.widget)
+        self.lineEdit_ftpHost.setObjectName(_fromUtf8("lineEdit_ftpHost"))
+        self.gridLayout.addWidget(self.lineEdit_ftpHost, 2, 1, 1, 1)
+        self.label_4 = QtGui.QLabel(self.widget)
+        self.label_4.setObjectName(_fromUtf8("label_4"))
+        self.gridLayout.addWidget(self.label_4, 3, 0, 1, 1)
+        self.lineEdit_ftpUser = QtGui.QLineEdit(self.widget)
+        self.lineEdit_ftpUser.setObjectName(_fromUtf8("lineEdit_ftpUser"))
+        self.gridLayout.addWidget(self.lineEdit_ftpUser, 3, 1, 1, 1)
+        self.label_5 = QtGui.QLabel(self.widget)
+        self.label_5.setObjectName(_fromUtf8("label_5"))
+        self.gridLayout.addWidget(self.label_5, 4, 0, 1, 1)
+        self.lineEdit_ftpPassword = QtGui.QLineEdit(self.widget)
+        self.lineEdit_ftpPassword.setObjectName(_fromUtf8("lineEdit_ftpPassword"))
+        self.gridLayout.addWidget(self.lineEdit_ftpPassword, 4, 1, 1, 1)
+       
+        self.label_7 = QtGui.QLabel(self.widget)
+        self.label_7.setObjectName(_fromUtf8("label_7"))
+        self.gridLayout.addWidget(self.label_7, 6, 0, 1, 1)
+        self.lineEdit_ftpDirectory = QtGui.QLineEdit(self.widget)
+        self.lineEdit_ftpDirectory.setObjectName(_fromUtf8("lineEdit_ftpDirectory"))
+        self.gridLayout.addWidget(self.lineEdit_ftpDirectory, 6, 1, 1, 1)
+        self.label_8 = QtGui.QLabel(self.widget)
+        self.label_8.setObjectName(_fromUtf8("label_8"))
+        self.gridLayout.addWidget(self.label_8, 7, 0, 1, 1)
+
+        self.retranslateUi(formProjects)
+        QtCore.QMetaObject.connectSlotsByName(formProjects)
+
+        self.pushButton_editProject.clicked.connect(ui.editProjectEdit)
+        self.pushButton_removeProject.clicked.connect(ui.removeProject)
+
+
+    def retranslateUi(self, formProjects):
+        formProjects.setWindowTitle(_translate("formProjects", "Edit Project", None))
+        self.pushButton_editProject.setText(_translate("formProjects", "Edit", None))
+        self.pushButton_removeProject.setText(_translate("formProjects", "Delete", None))
+        self.pushButton_browse.setText(_translate("formProjects", "Browse", None))
+        self.label.setText(_translate("formProjects", "Project Title", None))
+        self.label_2.setText(_translate("formProjects", "Local Directory", None))
+        self.label_3.setText(_translate("formProjects", "FTP Host", None))
+        self.label_4.setText(_translate("formProjects", "FTP User", None))
+        self.label_5.setText(_translate("formProjects", "FTP Password", None))
+        self.label_7.setText(_translate("formProjects", "FTP Directory", None))
+
 
 
 if __name__ == "__main__":
@@ -503,9 +638,14 @@ if __name__ == "__main__":
     ui.showProjects()
     MainWindow.show()
 
-    NewProject = QtGui.QMainWindow(MainWindow)
+    NewProject = QtGui.QDialog(MainWindow)
     NewProject.setModal(True)
     ui_newProject = Ui_formProjects()
     ui_newProject.setupUi(NewProject)
+
+    EditProject = QtGui.QDialog(MainWindow)
+    EditProject.setModal(True)
+    ui_editProject = Ui_formEditProject()
+    ui_editProject.setupUi(EditProject)
 
     sys.exit(app.exec_())
